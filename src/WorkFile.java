@@ -25,11 +25,6 @@ public class WorkFile {
         return k;
     }
 
-    /*public String[] deleteSymbols(String[] strings){
-        for (each )
-    }*/
-
-
     public String[] readLines() throws IOException {
         String result[] = new String[rowCount()];
         BufferedReader file = new BufferedReader(new FileReader(fileName));
