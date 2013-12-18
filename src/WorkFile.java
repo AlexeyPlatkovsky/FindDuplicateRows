@@ -30,8 +30,10 @@ public class WorkFile {
         BufferedReader file = new BufferedReader(new FileReader(fileName));
         String line = file.readLine();
         int k = 0;
+        String regExp = null;
+
         while(line!=null){
-            result[k] = line.replaceAll("\\p{Punct}", "");
+            result[k] = line.replaceAll(",", "").replaceAll("\\\\", "").replaceAll("\"", "");
             k++;
             line = file.readLine();
         }
