@@ -10,11 +10,12 @@ import java.io.IOException;
  * Time: 10:33
  */
 public class ParseFile {
-    static String setting = "mark";
+    String setting = "";
     WorkFile workFile;
     String[] text;
 
-    public ParseFile(File fileName) {
+    public ParseFile(File fileName, String setting) {
+        this.setting = setting;
         workFile = new WorkFile(fileName);
     }
 
@@ -27,8 +28,8 @@ public class ParseFile {
         workFile.writeFile(text);
     }
 
-    public static String doResult(String str){
-        switch (setting) {
+    public String doResult(String str){
+        switch (setting.toLowerCase()) {
             case "mark":
                 return "*" + str;
             case "delete":
