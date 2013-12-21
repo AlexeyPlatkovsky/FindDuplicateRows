@@ -51,6 +51,7 @@ public class MainForm{
         ButtonGroup group = new ButtonGroup();
         group.add(delete);
         group.add(mark);
+        delete.setSelected(true);
         radioButtonPanel.add(delete);
         radioButtonPanel.add(mark);
         radioButtonPanel.setBounds(0, 0, 200, 100);
@@ -103,9 +104,7 @@ public class MainForm{
             chooseFile.addActionListener(new ChooseFileEvent());
             FileFilter ff = new FileFilter() {
                 public boolean accept(File f) {
-                    if (f.getName().toLowerCase().endsWith(".txt"))
-                        return true;
-                    if (f.isDirectory())
+                    if (f.getName().toLowerCase().endsWith(".txt") || f.isDirectory())
                         return true;
                     return false;
                 }
@@ -119,11 +118,14 @@ public class MainForm{
 
         private class ChooseFileEvent implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                if (JFileChooser.CANCEL_OPTION == 1)
+                if (JFileChooser.CANCEL_OPTION == 1){
                     chooseFileFrame.setVisible(false);
+                    return;
+                }
                 if (JFileChooser.OPEN_DIALOG == 0){
                     fileToParse = chooseFile.getSelectedFile();
                     fileNameLabel.setText("Selected file: " + fileToParse.getName());
+                    chooseFile.setCurrentDirectory(fileToParse.getAbsoluteFile());
                     chooseFileFrame.setVisible(false);
                 }
             }
