@@ -1,9 +1,12 @@
 package gui;
 
+import logic.ParseFile;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +41,12 @@ public class MainForm extends JFrame{
     private class ParseButtonEventListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            ParseFile file = new ParseFile(fileToParse);
+            try {
+                file.getResult();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

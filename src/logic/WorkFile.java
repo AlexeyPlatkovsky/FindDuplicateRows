@@ -9,9 +9,9 @@ import java.io.*;
  * Time: 11:49
  */
 public class WorkFile {
-    String fileName;
+    File fileName;
 
-    public WorkFile(String fileName){
+    public WorkFile(File fileName){
             this.fileName = fileName;
     }
 
