@@ -3,6 +3,7 @@ package gui;
 import logic.ParseFile;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -59,6 +60,21 @@ public class MainForm extends JFrame{
             chooseFileFrame.setResizable(false);
             chooseFileFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             chooseFile.addActionListener(new ChooseFileEvent());
+            chooseFile.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    if (f.getName().toLowerCase().endsWith(".txt"))
+                        return true;
+                    if (f.isDirectory())
+                        return true;
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Only TXT files";
+                }
+            });
         }
 
         private class ChooseFileEvent implements ActionListener {

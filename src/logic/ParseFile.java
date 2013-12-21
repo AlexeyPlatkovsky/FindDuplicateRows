@@ -10,7 +10,7 @@ import java.io.IOException;
  * Time: 10:33
  */
 public class ParseFile {
-    static String set = "mark";
+    static String setting = "mark";
     WorkFile workFile;
     String[] text;
 
@@ -28,7 +28,7 @@ public class ParseFile {
     }
 
     public static String doResult(String str){
-        switch (set) {
+        switch (setting) {
             case "mark":
                 return "*" + str;
             case "delete":
