@@ -60,8 +60,7 @@ public class MainForm extends JFrame{
             chooseFileFrame.setResizable(false);
             chooseFileFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             chooseFile.addActionListener(new ChooseFileEvent());
-            chooseFile.setFileFilter(new FileFilter() {
-                @Override
+            FileFilter ff = new FileFilter() {
                 public boolean accept(File f) {
                     if (f.getName().toLowerCase().endsWith(".txt"))
                         return true;
@@ -69,12 +68,12 @@ public class MainForm extends JFrame{
                         return true;
                     return false;
                 }
-
-                @Override
                 public String getDescription() {
                     return "Only TXT files";
                 }
-            });
+            };
+            chooseFile.setFileFilter(ff);
+            chooseFile.setAcceptAllFileFilterUsed(false);
         }
 
         private class ChooseFileEvent implements ActionListener {
