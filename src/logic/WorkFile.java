@@ -10,9 +10,11 @@ import java.io.*;
  */
 public class WorkFile {
     File fileName;
+    String setting = "";
 
-    public WorkFile(File fileName){
+    public WorkFile(File fileName, String deleteSetting){
             this.fileName = fileName;
+        setting = deleteSetting;
     }
 
     public int rowCount() throws IOException {
@@ -27,6 +29,8 @@ public class WorkFile {
         return k;
     }
 
+
+
     public String[] readLines() throws IOException {
         String result[] = new String[rowCount()];
         BufferedReader file = new BufferedReader(new FileReader(fileName));
@@ -39,10 +43,25 @@ public class WorkFile {
             line = file.readLine();
         }
         file.close();
-        return deleteAll(result);
+        switch (setting.toLowerCase()){
+            case "all punctuation": return deleteAll(result);
+            case "part of symbols": return deletePart(result);
+            case "nothing": return result;
+        }
+        return result;
     }
 
     public String[] deleteAll(String[] strs) throws IOException {
+        String result[] = new String[rowCount()];
+        int k = 0;
+        for (String line : strs){
+            result[k] = line.replaceAll("\\p{Punct}", "");
+            k++;
+        }
+        return result;
+    }
+
+    public String[] deletePart(String[] strs) throws IOException {
         String result[] = new String[rowCount()];
         int k = 0;
         for (String line : strs){

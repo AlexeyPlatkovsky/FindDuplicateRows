@@ -14,9 +14,9 @@ public class ParseFile {
     WorkFile workFile;
     String[] text;
 
-    public ParseFile(File fileName, String setting) {
+    public ParseFile(File fileName, String setting, String deleteSetting) {
         this.setting = setting;
-        workFile = new WorkFile(fileName);
+        workFile = new WorkFile(fileName, deleteSetting);
     }
 
     public void getResult() throws IOException {

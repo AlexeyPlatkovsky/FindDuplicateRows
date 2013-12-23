@@ -33,7 +33,8 @@ public class MainForm{
     private JPanel parsePanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse;
-    String setting = "";
+    private String setting = "";
+    private String deleteSetting = "";
 
     //deletePanel
     private JPanel radioButtonPanel = new JPanel();
@@ -43,6 +44,7 @@ public class MainForm{
     private JRadioButton deleteNothing = new JRadioButton("Nothing");
     private JRadioButton deleteSome = new JRadioButton("Part of symbols");
     private JLabel deleteLabel = new JLabel("Delete punctuation:");
+
 
 
     public MainForm(){
@@ -89,26 +91,39 @@ public class MainForm{
         parsePanel.add(parseButton);
         parsePanel.setBounds(250, 250, 200, 200);
         chooseButton.addActionListener(new ChooseButtonEventListener());
-        parseButton.addActionListener(new ParseButtonEventListener(groupSettings));
+        parseButton.addActionListener(new ParseButtonEventListener(groupSettings, groupDelete));
         frame.setVisible(true);
     }
 
     private class ParseButtonEventListener implements ActionListener {
-        ButtonGroup group;
+        private final ButtonGroup groupSettings;
+        private final ButtonGroup groupDelete;
 
-        public ParseButtonEventListener(ButtonGroup group) {
-            this.group = group;
+        public ParseButtonEventListener(ButtonGroup groupSettings, ButtonGroup groupDelete) {
+            this.groupSettings = groupSettings;
+            this.groupDelete = groupDelete;
         }
 
         public void actionPerformed(ActionEvent e) {
 
-            getSetting(group);
-            ParseFile file = new ParseFile(fileToParse, setting);
+            getSetting(groupSettings);
+            getDeleteSetting(groupDelete);
+            ParseFile file = new ParseFile(fileToParse, setting, deleteSetting);
 
             try {
                 file.getResult();
             } catch (IOException e1) {
                 e1.printStackTrace();
+            }
+        }
+    }
+
+    public void getDeleteSetting(ButtonGroup group){
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                deleteSetting =  button.getText();
             }
         }
     }
