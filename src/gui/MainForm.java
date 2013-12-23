@@ -33,6 +33,7 @@ public class MainForm{
     private JPanel parsePanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse;
+    String setting = "";
 
     //deletePanel
     private JPanel radioButtonPanel = new JPanel();
@@ -49,7 +50,7 @@ public class MainForm{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mark duplicated rows");
         frame.setResizable(false);
-        frame.setLayout(null);
+        frame.setLayout(new GridLayout(2, 2));
 
         frame.add(radioButtonPanel);
         frame.add(deletePanel);
@@ -93,28 +94,31 @@ public class MainForm{
     }
 
     private class ParseButtonEventListener implements ActionListener {
-        String setting = "";
-        Enumeration<AbstractButton> elements;
+        ButtonGroup group;
 
         public ParseButtonEventListener(ButtonGroup group) {
-            elements = group.getElements();
+            this.group = group;
         }
 
         public void actionPerformed(ActionEvent e) {
-            for (Enumeration<AbstractButton> buttons = elements; buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
 
-                if (button.isSelected()) {
-                    setting =  button.getText();
-                }
-            }
-
+            getSetting(group);
             ParseFile file = new ParseFile(fileToParse, setting);
 
             try {
                 file.getResult();
             } catch (IOException e1) {
                 e1.printStackTrace();
+            }
+        }
+    }
+
+    public void getSetting(ButtonGroup group){
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                setting =  button.getText();
             }
         }
     }
@@ -126,7 +130,6 @@ public class MainForm{
             chooseFileFrame.setBounds(400, 400, 600, 300);
             chooseFileFrame.setResizable(false);
             chooseFileFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            chooseFile.addActionListener(new ChooseFileEvent());
             FileFilter ff = new FileFilter() {
                 public boolean accept(File f) {
                     if (f.getName().toLowerCase().endsWith(".txt") || f.isDirectory())
@@ -139,19 +142,25 @@ public class MainForm{
             };
             chooseFile.setFileFilter(ff);
             chooseFile.setAcceptAllFileFilterUsed(false);
+
+            chooseFile.addActionListener(new ChooseFileEvent());
+
         }
 
         private class ChooseFileEvent implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                if (JFileChooser.CANCEL_OPTION == 1){
-                    chooseFileFrame.setVisible(false);
-                    return;
-                }
-                if (JFileChooser.OPEN_DIALOG == 0){
+
+                if (JFileChooser.APPROVE_SELECTION.equals(e.getActionCommand())){
                     fileToParse = chooseFile.getSelectedFile();
                     fileNameLabel.setText("Selected file: " + fileToParse.getName());
                     chooseFile.setCurrentDirectory(fileToParse.getAbsoluteFile());
                     chooseFileFrame.setVisible(false);
+                    return;
+                }
+
+                if (JFileChooser.CANCEL_SELECTION.equals(e.getActionCommand())){
+                    chooseFileFrame.setVisible(false);
+                    return;
                 }
             }
         }

@@ -34,11 +34,21 @@ public class WorkFile {
         int k = 0;
 
         while(line!=null){
-            result[k] = line.replaceAll(",", "").replaceAll("\\\\", "").replaceAll("\"", "");
+            result[k] = line;
             k++;
             line = file.readLine();
         }
         file.close();
+        return deleteAll(result);
+    }
+
+    public String[] deleteAll(String[] strs) throws IOException {
+        String result[] = new String[rowCount()];
+        int k = 0;
+        for (String line : strs){
+            result[k] = line.replaceAll(",", "").replaceAll("\\\\", "").replaceAll("\"", "");
+            k++;
+        }
         return result;
     }
 
