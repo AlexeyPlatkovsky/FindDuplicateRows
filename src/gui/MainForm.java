@@ -19,6 +19,13 @@ import java.util.Enumeration;
  */
 public class MainForm{
     private JFrame frame = new JFrame();
+
+    //settings
+    private JLabel settingsLabel = new JLabel("Duplicated rows:");
+    private JRadioButton delete = new JRadioButton("Delete");
+    private JRadioButton mark = new JRadioButton("Mark");
+
+    //filePanel
     private JButton parseButton = new JButton("Parse text");
     private JButton chooseButton = new JButton("Choose txt file");
     private JLabel fileNameLabel = new JLabel("No file is selected");
@@ -26,36 +33,52 @@ public class MainForm{
     private JPanel parsePanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse;
-    private JRadioButton delete = new JRadioButton("Delete");
-    private JRadioButton mark = new JRadioButton("Mark");
+
+    //deletePanel
     private JPanel radioButtonPanel = new JPanel();
-    private JPanel panel2 = new JPanel();
+    private JPanel deletePanel = new JPanel();
     private JPanel infoPanel = new JPanel();
+    private JRadioButton deleteAll = new JRadioButton("All punctuation");
+    private JRadioButton deleteNothing = new JRadioButton("Nothing");
+    private JRadioButton deleteSome = new JRadioButton("Part of symbols");
+    private JLabel deleteLabel = new JLabel("Delete punctuation:");
+
 
     public MainForm(){
-        frame.setBounds(400, 400, 300, 200);
+        frame.setBounds(400, 400, 300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mark duplicated rows");
         frame.setResizable(false);
         frame.setLayout(new GridLayout(2, 2));
         frame.add(radioButtonPanel);
-        frame.add(panel2);
+        frame.add(deletePanel);
         frame.add(infoPanel);
         frame.add(parsePanel);
 
-        //infoPanel
+        //deletePanel
+        ButtonGroup groupDelete = new ButtonGroup();
+        groupDelete.add(deleteNothing);
+        groupDelete.add(deleteSome);
+        groupDelete.add(deleteAll);
+        deletePanel.add(deleteLabel);
+        deletePanel.add(deleteNothing);
+        deletePanel.add(deleteSome);
+        deletePanel.add(deleteAll);
+        deleteNothing.setSelected(true);
 
+        //infoPanel
         infoPanel.add(fileNameLabel);
 
         //option panel
-        ButtonGroup group = new ButtonGroup();
-        group.add(delete);
-        group.add(mark);
+        radioButtonPanel.add(settingsLabel);
+        ButtonGroup groupSettings = new ButtonGroup();
+        groupSettings.add(delete);
+        groupSettings.add(mark);
         delete.setSelected(true);
         radioButtonPanel.add(delete);
         radioButtonPanel.add(mark);
         radioButtonPanel.setBounds(0, 0, 200, 100);
-        radioButtonPanel.setLayout(new GridLayout(2, 1));
+        radioButtonPanel.setLayout(new GridLayout(3, 1));
 
         //buttons Panel
         frame.add(parsePanel);
@@ -63,7 +86,7 @@ public class MainForm{
         parsePanel.add(parseButton);
         parsePanel.setBounds(250, 250, 200, 200);
         chooseButton.addActionListener(new ChooseButtonEventListener());
-        parseButton.addActionListener(new ParseButtonEventListener(group));
+        parseButton.addActionListener(new ParseButtonEventListener(groupSettings));
         frame.setVisible(true);
     }
 
