@@ -49,7 +49,8 @@ public class MainForm{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mark duplicated rows");
         frame.setResizable(false);
-        frame.setLayout(new GridLayout(2, 2));
+        frame.setLayout(null);
+
         frame.add(radioButtonPanel);
         frame.add(deletePanel);
         frame.add(infoPanel);
@@ -65,6 +66,7 @@ public class MainForm{
         deletePanel.add(deleteSome);
         deletePanel.add(deleteAll);
         deleteNothing.setSelected(true);
+        deletePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         //infoPanel
         infoPanel.add(fileNameLabel);
