@@ -32,9 +32,9 @@ public class MainForm{
     private JFileChooser chooseFile = new JFileChooser("Choose txt file");
     private JPanel parsePanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
-    private File fileToParse;
-    private String setting = "";
-    private String deleteSetting = "";
+    private File fileToParse = null;
+    private String duplicatedRowSettings = "";
+    private String deletePunctionSetting = "";
 
     //deletePanel
     private JPanel radioButtonPanel = new JPanel();
@@ -95,6 +95,7 @@ public class MainForm{
         frame.setVisible(true);
     }
 
+    //parse Button event
     private class ParseButtonEventListener implements ActionListener {
         private final ButtonGroup groupSettings;
         private final ButtonGroup groupDelete;
@@ -108,7 +109,9 @@ public class MainForm{
 
             getSetting(groupSettings);
             getDeleteSetting(groupDelete);
-            ParseFile file = new ParseFile(fileToParse, setting, deleteSetting);
+            if (fileToParse == null)
+                return;
+            ParseFile file = new ParseFile(fileToParse, duplicatedRowSettings, deletePunctionSetting);
 
             try {
                 file.getResult();
@@ -118,26 +121,29 @@ public class MainForm{
         }
     }
 
+    //what punction to delete
     public void getDeleteSetting(ButtonGroup group){
         for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
-                deleteSetting =  button.getText();
+                deletePunctionSetting =  button.getText();
             }
         }
     }
 
+    //what to do with duplicated rows
     public void getSetting(ButtonGroup group){
         for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
-                setting =  button.getText();
+                duplicatedRowSettings =  button.getText();
             }
         }
     }
 
+    //choose button event
     private class ChooseButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             chooseFileFrame.setVisible(true);
@@ -170,12 +176,10 @@ public class MainForm{
                     fileNameLabel.setText("Selected file: " + fileToParse.getName());
                     chooseFile.setCurrentDirectory(fileToParse.getAbsoluteFile());
                     chooseFileFrame.setVisible(false);
-                    return;
                 }
 
                 if (JFileChooser.CANCEL_SELECTION.equals(e.getActionCommand())){
                     chooseFileFrame.setVisible(false);
-                    return;
                 }
             }
         }
