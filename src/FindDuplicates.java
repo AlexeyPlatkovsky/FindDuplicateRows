@@ -1,5 +1,7 @@
 import gui.MainForm;
 
+import java.io.IOException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: platkovskyas
@@ -7,7 +9,7 @@ import gui.MainForm;
  * Time: 12:15
  */
 public class FindDuplicates {
-    public static void main (String[] args){
+    public static void main (String[] args) throws IOException {
         MainForm form = new MainForm();
     }
 }

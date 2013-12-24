@@ -1,6 +1,8 @@
 package gui;
 
 import logic.ParseFile;
+import sources.Cons;
+import sources.Localization;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -21,15 +23,15 @@ public class MainForm{
     private JFrame frame = new JFrame();
 
     //settings
-    private JLabel settingsLabel = new JLabel("Duplicated rows:");
-    private JRadioButton delete = new JRadioButton("Delete");
-    private JRadioButton mark = new JRadioButton("Mark");
+    private JLabel settingsLabel = new JLabel();
+    private JRadioButton delete = new JRadioButton();
+    private JRadioButton mark = new JRadioButton();
 
     //filePanel
-    private JButton parseButton = new JButton("Parse text");
-    private JButton chooseButton = new JButton("Choose txt file");
-    private JLabel fileNameLabel = new JLabel("No file is selected");
-    private JFileChooser chooseFile = new JFileChooser("Choose txt file");
+    private JButton parseButton = new JButton();
+    private JButton chooseButton = new JButton();
+    private JLabel fileNameLabel = new JLabel();
+    private JFileChooser chooseFile = new JFileChooser();
     private JPanel buttonsPanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse = null;
@@ -40,17 +42,36 @@ public class MainForm{
     private JPanel markOptionsPanel = new JPanel();
     private JPanel punctuationOptionalsPanel = new JPanel();
     private JPanel infoPanel = new JPanel();
-    private JRadioButton deleteAll = new JRadioButton("All punctuation");
-    private JRadioButton deleteNothing = new JRadioButton("Nothing");
-    private JRadioButton deleteSome = new JRadioButton("Part of symbols");
-    private JLabel deleteLabel = new JLabel("Delete punctuation:");
+    private JRadioButton deleteAll = new JRadioButton();
+    private JRadioButton deleteNothing = new JRadioButton();
+    private JRadioButton deleteSome = new JRadioButton("");
+    private JLabel deleteLabel = new JLabel();
+    private String fileFilter;
+    private String selectedFile;
 
+    public void doLocalization() throws IOException {
+        Localization.loadProperties(new File("sources/eng.properties"));
+        settingsLabel.setText(Localization.settingsLabel);
+        delete.setText(Localization.delete);
+        mark.setText(Localization.mark);
+        parseButton.setText(Localization.parseButton);
+        chooseButton.setText(Localization.chooseButton);
+        fileNameLabel.setText(Localization.fileNameLabel);
+        chooseFile.setName(Localization.chooseFile);
+        deleteAll.setText(Localization.deleteAll);
+        deleteNothing.setText(Localization.deleteNothing);
+        deleteSome.setText(Localization.deleteSome);
+        deleteLabel.setText(Localization.deleteLabel);
+        fileFilter = Localization.fileFilter;
+        selectedFile = Localization.selectedFile;
+    }
 
+    public MainForm() throws IOException {
+        doLocalization();
 
-    public MainForm(){
-        frame.setBounds(600, 400, 300, 300);
+        frame.setBounds(Cons.frameBounds.get(0), Cons.frameBounds.get(1), Cons.frameBounds.get(2), Cons.frameBounds.get(3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Mark duplicated rows");
+        frame.setTitle(Localization.frame);
         frame.setResizable(false);
         frame.setLayout(null);
 
@@ -67,7 +88,7 @@ public class MainForm{
         markOptionsPanel.add(settingsLabel);
         markOptionsPanel.add(delete);
         markOptionsPanel.add(mark);
-        markOptionsPanel.setBounds(0, 0, 80, 150);
+        markOptionsPanel.setBounds(Cons.makrOptionsPanelBounds.get(0), Cons.makrOptionsPanelBounds.get(1), Cons.makrOptionsPanelBounds.get(2), Cons.makrOptionsPanelBounds.get(3));
         markOptionsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         //punctuationOptionalsPanel
@@ -153,7 +174,7 @@ public class MainForm{
                     return false;
                 }
                 public String getDescription() {
-                    return "Only TXT files";
+                    return fileFilter;
                 }
             };
             chooseFile.setFileFilter(ff);
@@ -168,7 +189,7 @@ public class MainForm{
 
                 if (JFileChooser.APPROVE_SELECTION.equals(e.getActionCommand())){
                     fileToParse = chooseFile.getSelectedFile();
-                    fileNameLabel.setText("Selected file: " + fileToParse.getName());
+                    fileNameLabel.setText(selectedFile + " " + fileToParse.getName());
                     chooseFile.setCurrentDirectory(fileToParse.getAbsoluteFile());
                     chooseFileFrame.setVisible(false);
                 }
