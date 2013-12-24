@@ -22,14 +22,11 @@ public class WorkFile {
     public List<String> readLines() throws IOException {
         List<String> str = new ArrayList<>();
         BufferedReader file = new BufferedReader(new FileReader(fileName));
-        String line = file.readLine();
+        String line;
 
-        while(line!=null){
+        while((line = file.readLine()) !=null){
             str.add(line);
-            line = file.readLine();
         }
-
-
 
         file.close();
         switch (setting.toLowerCase()){
