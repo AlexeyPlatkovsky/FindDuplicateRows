@@ -30,15 +30,15 @@ public class MainForm{
     private JButton chooseButton = new JButton("Choose txt file");
     private JLabel fileNameLabel = new JLabel("No file is selected");
     private JFileChooser chooseFile = new JFileChooser("Choose txt file");
-    private JPanel parsePanel = new JPanel();
+    private JPanel buttonsPanel = new JPanel();
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse = null;
     private String duplicatedRowSettings = "";
     private String deletePunctuationSetting = "";
 
-    //deletePanel
-    private JPanel radioButtonPanel = new JPanel();
-    private JPanel deletePanel = new JPanel();
+    //punctuationOptionalsPanel
+    private JPanel markOptionsPanel = new JPanel();
+    private JPanel punctuationOptionalsPanel = new JPanel();
     private JPanel infoPanel = new JPanel();
     private JRadioButton deleteAll = new JRadioButton("All punctuation");
     private JRadioButton deleteNothing = new JRadioButton("Nothing");
@@ -48,50 +48,53 @@ public class MainForm{
 
 
     public MainForm(){
-        frame.setBounds(400, 400, 300, 300);
+        frame.setBounds(600, 400, 300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mark duplicated rows");
         frame.setResizable(false);
-        frame.setLayout(new GridLayout(2, 2));
+        frame.setLayout(null);
 
-        frame.add(radioButtonPanel);
-        frame.add(deletePanel);
+        frame.add(markOptionsPanel);
+        frame.add(punctuationOptionalsPanel);
         frame.add(infoPanel);
-        frame.add(parsePanel);
-
-        //deletePanel
-        ButtonGroup punctuationGroup = new ButtonGroup();
-        punctuationGroup.add(deleteNothing);
-        punctuationGroup.add(deleteSome);
-        punctuationGroup.add(deleteAll);
-        deletePanel.add(deleteLabel);
-        deletePanel.add(deleteNothing);
-        deletePanel.add(deleteSome);
-        deletePanel.add(deleteAll);
-        deleteNothing.setSelected(true);
-        deletePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        //infoPanel
-        infoPanel.add(fileNameLabel);
+        frame.add(buttonsPanel);
 
         //option panel
-        radioButtonPanel.add(settingsLabel);
         ButtonGroup duplicatedRowsSettings = new ButtonGroup();
         duplicatedRowsSettings.add(delete);
         duplicatedRowsSettings.add(mark);
         delete.setSelected(true);
-        radioButtonPanel.add(delete);
-        radioButtonPanel.add(mark);
-        radioButtonPanel.setBounds(0, 0, 200, 100);
-        radioButtonPanel.setLayout(new GridLayout(3, 1));
+        markOptionsPanel.add(settingsLabel);
+        markOptionsPanel.add(delete);
+        markOptionsPanel.add(mark);
+        markOptionsPanel.setBounds(0, 0, 80, 150);
+        markOptionsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        //punctuationOptionalsPanel
+        ButtonGroup punctuationGroup = new ButtonGroup();
+        punctuationGroup.add(deleteNothing);
+        punctuationGroup.add(deleteSome);
+        punctuationGroup.add(deleteAll);
+        punctuationOptionalsPanel.setBounds(150, 0, 150, 150);
+        punctuationOptionalsPanel.add(deleteLabel);
+        punctuationOptionalsPanel.add(deleteNothing);
+        punctuationOptionalsPanel.add(deleteSome);
+        punctuationOptionalsPanel.add(deleteAll);
+        deleteNothing.setSelected(true);
+        punctuationOptionalsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        //infoPanel
+        infoPanel.add(fileNameLabel);
+        infoPanel.setBounds(0, 150, 150, 150);
 
         //buttons Panel
-        frame.add(parsePanel);
-        parsePanel.add(chooseButton);
-        parsePanel.add(parseButton);
-        parsePanel.setBounds(250, 250, 200, 200);
+        frame.add(buttonsPanel);
+        buttonsPanel.add(chooseButton);
+        buttonsPanel.add(parseButton);
+        buttonsPanel.setBounds(150, 150, 150, 150);
         chooseButton.addActionListener(new ChooseButtonEventListener());
         parseButton.addActionListener(new ParseButtonEventListener(duplicatedRowsSettings, punctuationGroup));
+
         frame.setVisible(true);
     }
 
