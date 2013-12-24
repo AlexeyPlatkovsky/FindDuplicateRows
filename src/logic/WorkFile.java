@@ -1,6 +1,8 @@
 package logic;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,70 +13,55 @@ import java.io.*;
 public class WorkFile {
     File fileName;
     String setting = "";
+    int rowCount = 0;
 
     public WorkFile(File fileName, String deleteSetting){
             this.fileName = fileName;
         setting = deleteSetting;
     }
 
-    public int rowCount() throws IOException {
-        BufferedReader file = new BufferedReader(new FileReader(fileName));
-        int k = 0;
-        String line = file.readLine();
-        while (line!=null){
-            k++;
-            line = file.readLine();
-        }
-        file.close();
-        return k;
-    }
-
-
-
-    public String[] readLines() throws IOException {
-        String result[] = new String[rowCount()];
+    public List<String> readLines() throws IOException {
+        List<String> str = new ArrayList<>();
         BufferedReader file = new BufferedReader(new FileReader(fileName));
         String line = file.readLine();
-        int k = 0;
 
         while(line!=null){
-            result[k] = line;
-            k++;
+            str.add(rowCount, line);
+            rowCount++;
             line = file.readLine();
         }
+
         file.close();
         switch (setting.toLowerCase()){
-            case "all punctuation": return deleteAll(result);
-            case "part of symbols": return deletePart(result);
-            case "nothing": return result;
+            case "all punctuation": return deleteAll(str);
+            case "part of symbols": return deletePart(str);
+            case "nothing": return str;
         }
-        return result;
+        return str;
     }
 
-    public String[] deleteAll(String[] strs) throws IOException {
-        String result[] = new String[rowCount()];
+    public List<String> deleteAll(List<String> str) throws IOException {
         int k = 0;
-        for (String line : strs){
-            result[k] = line.replaceAll("\\p{Punct}", "");
+        for (String line : str){
+            str.set(k, line.replaceAll("\\p{Punct}", ""));
             k++;
         }
-        return result;
+        return str;
     }
 
-    public String[] deletePart(String[] strs) throws IOException {
-        String result[] = new String[rowCount()];
+    public List<String> deletePart(List<String> str) throws IOException {
         int k = 0;
-        for (String line : strs){
-            result[k] = line.replaceAll(",", "").replaceAll("\\\\", "").replaceAll("\"", "");
+        for (String line : str){
+            str.set(k, line.replaceAll(",", "").replaceAll("\\\\", "").replaceAll("\"", ""));
             k++;
         }
-        return result;
+        return str;
     }
 
-    public void writeFile(String[] strings) throws IOException {
+    public void writeFile(List<String> str) throws IOException {
         BufferedWriter file = new BufferedWriter(new FileWriter("result.txt"));
 
-        for (String i: strings)
+        for (String i: str)
             file.write(i + "\n");
         file.close();
     }
