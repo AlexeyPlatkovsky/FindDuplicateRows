@@ -19,16 +19,16 @@ public class ParseFile {
         workFile = new WorkFile(fileName, deleteSetting);
     }
 
-    public void getResult() throws IOException {
+    public void doParse() throws IOException {
         text = workFile.readLines();
         for (int i = 0; i < text.length - 1; i++)
             for (int k = i+1; k < text.length; k++)
                 if (text[i].equals(text[k]))
-                    text[k] = doResult(text[i]);
+                    text[k] = applyMarkSettings(text[i]);
         workFile.writeFile(text);
     }
 
-    public String doResult(String str){
+    public String applyMarkSettings(String str){
         switch (setting.toLowerCase()) {
             case "mark":
                 return "*" + str;

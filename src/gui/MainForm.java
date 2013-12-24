@@ -34,7 +34,7 @@ public class MainForm{
     private JFrame chooseFileFrame = new JFrame();
     private File fileToParse = null;
     private String duplicatedRowSettings = "";
-    private String deletePunctionSetting = "";
+    private String deletePunctuationSetting = "";
 
     //deletePanel
     private JPanel radioButtonPanel = new JPanel();
@@ -60,10 +60,10 @@ public class MainForm{
         frame.add(parsePanel);
 
         //deletePanel
-        ButtonGroup groupDelete = new ButtonGroup();
-        groupDelete.add(deleteNothing);
-        groupDelete.add(deleteSome);
-        groupDelete.add(deleteAll);
+        ButtonGroup punctuationGroup = new ButtonGroup();
+        punctuationGroup.add(deleteNothing);
+        punctuationGroup.add(deleteSome);
+        punctuationGroup.add(deleteAll);
         deletePanel.add(deleteLabel);
         deletePanel.add(deleteNothing);
         deletePanel.add(deleteSome);
@@ -76,9 +76,9 @@ public class MainForm{
 
         //option panel
         radioButtonPanel.add(settingsLabel);
-        ButtonGroup groupSettings = new ButtonGroup();
-        groupSettings.add(delete);
-        groupSettings.add(mark);
+        ButtonGroup duplicatedRowsSettings = new ButtonGroup();
+        duplicatedRowsSettings.add(delete);
+        duplicatedRowsSettings.add(mark);
         delete.setSelected(true);
         radioButtonPanel.add(delete);
         radioButtonPanel.add(mark);
@@ -91,56 +91,48 @@ public class MainForm{
         parsePanel.add(parseButton);
         parsePanel.setBounds(250, 250, 200, 200);
         chooseButton.addActionListener(new ChooseButtonEventListener());
-        parseButton.addActionListener(new ParseButtonEventListener(groupSettings, groupDelete));
+        parseButton.addActionListener(new ParseButtonEventListener(duplicatedRowsSettings, punctuationGroup));
         frame.setVisible(true);
     }
 
     //parse Button event
     private class ParseButtonEventListener implements ActionListener {
-        private final ButtonGroup groupSettings;
-        private final ButtonGroup groupDelete;
+        private final ButtonGroup rowSettings;
+        private final ButtonGroup punctuationSettings;
 
-        public ParseButtonEventListener(ButtonGroup groupSettings, ButtonGroup groupDelete) {
-            this.groupSettings = groupSettings;
-            this.groupDelete = groupDelete;
+        public ParseButtonEventListener(ButtonGroup rowSettings, ButtonGroup punctuationSettings) {
+            this.rowSettings = rowSettings;
+            this.punctuationSettings = punctuationSettings;
         }
 
         public void actionPerformed(ActionEvent e) {
 
-            getSetting(groupSettings);
-            getDeleteSetting(groupDelete);
+            duplicatedRowSettings = getRadioButtonSettings(rowSettings);
+            deletePunctuationSetting = getRadioButtonSettings(punctuationSettings);
+
+
             if (fileToParse == null)
                 return;
-            ParseFile file = new ParseFile(fileToParse, duplicatedRowSettings, deletePunctionSetting);
+            ParseFile file = new ParseFile(fileToParse, duplicatedRowSettings, deletePunctuationSetting);
 
             try {
-                file.getResult();
+                file.doParse();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }
     }
 
-    //what punction to delete
-    public void getDeleteSetting(ButtonGroup group){
+    //what punctuation to delete
+    public String getRadioButtonSettings(ButtonGroup group){
         for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
-                deletePunctionSetting =  button.getText();
+                return button.getText();
             }
         }
-    }
-
-    //what to do with duplicated rows
-    public void getSetting(ButtonGroup group){
-        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-
-            if (button.isSelected()) {
-                duplicatedRowSettings =  button.getText();
-            }
-        }
+        return "";
     }
 
     //choose button event
