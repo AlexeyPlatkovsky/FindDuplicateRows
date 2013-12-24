@@ -13,7 +13,6 @@ import java.util.List;
 public class WorkFile {
     File fileName;
     String setting = "";
-    int rowCount = 0;
 
     public WorkFile(File fileName, String deleteSetting){
             this.fileName = fileName;
@@ -26,10 +25,11 @@ public class WorkFile {
         String line = file.readLine();
 
         while(line!=null){
-            str.add(rowCount, line);
-            rowCount++;
+            str.add(line);
             line = file.readLine();
         }
+
+
 
         file.close();
         switch (setting.toLowerCase()){
